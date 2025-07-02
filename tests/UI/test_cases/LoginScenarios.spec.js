@@ -8,8 +8,7 @@ Steps:
 3.Enter password: secret_sauce
 4.Click Login
 
-Expected Result: User lands on the inventory page
-
+Expected Result: User lands on the inventory page 
 */
 import test from  '../../../fixtures/fixtures'
 const Inventory = require('../pages/inventoryPage')
