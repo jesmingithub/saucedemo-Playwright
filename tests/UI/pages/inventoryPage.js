@@ -3,6 +3,9 @@ class Inventory {
   constructor(page) {
     this.page = page;
     this.productItems = page.locator(".inventory_item");
+    this.sortDropdown = page.getByText("Name (A to Z)Name (A to Z)");
+    this.sortProducts = page.locator('[data-test="product-sort-container"]');
+    this.productPrices = page.locator(".inventory_item_price");
   }
 
   async verifyInventoryPageUrl() {
@@ -27,6 +30,23 @@ class Inventory {
       await expect(nameLocator).toHaveText(product.name);
       await expect(priceLocator).toHaveText(product.price);
     }
+  }
+
+  async verifyProductCount() {
+    const count = await this.productItems.count();
+    expect(count).toBe(6);
+  }
+
+  async verifyProductSort() {
+    await this.sortDropdown.click();
+    await this.sortProducts.selectOption("hilo");
+    await this.page.waitForTimeout(500);
+    const productPrice = await this.productPrices.allTextContents();
+    const prices = productPrice.map((price) =>
+      parseFloat(price.replace("$", ""))
+    );
+    const sortedPrices = [...prices].sort((a, b) => b - a);
+    expect(prices).toEqual(sortedPrices);
   }
 }
 
