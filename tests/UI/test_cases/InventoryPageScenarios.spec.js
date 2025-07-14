@@ -36,4 +36,21 @@ test.describe("Inventory Page Scenarios", () => {
   test("TC_07:verify sorting products by price", async ({ inventoryPage }) => {
     await inventoryPage.verifyProductSort();
   });
+  /*TC008: Verify the addition and removal of item to the cart
+    Steps
+    1.	Login as a standard user
+    2.add an item to the cart
+    3.verify that the item is added
+    4.Remove the same object
+    5.Verify that the item is removed
+    Expected: addition and removal of item to the cart  must be successful
+  */
+  test("TC_08:verify addition and removal of items to the cart", async ({
+    inventoryPage,
+  }) => {
+    await inventoryPage.addItemToCart();
+    await inventoryPage.verifyCountOnItemAddition();
+    await inventoryPage.removeItemFromCart();
+    await inventoryPage.verifyCountOnItemRemoval();
+  });
 });

@@ -6,6 +6,13 @@ class Inventory {
     this.sortDropdown = page.getByText("Name (A to Z)Name (A to Z)");
     this.sortProducts = page.locator('[data-test="product-sort-container"]');
     this.productPrices = page.locator(".inventory_item_price");
+    this.addToCartButton = page.locator(
+      '[data-test="add-to-cart-sauce-labs-backpack"]'
+    );
+    this.removeFromCartButton = page.locator(
+      '[data-test="remove-sauce-labs-backpack"]'
+    );
+    this.cartBadge = page.locator(".shopping_cart_badge");
   }
 
   async verifyInventoryPageUrl() {
@@ -41,12 +48,37 @@ class Inventory {
     await this.sortDropdown.click();
     await this.sortProducts.selectOption("hilo");
     await this.page.waitForTimeout(500);
-    const productPrice = await this.productPrices.allTextContents();
-    const prices = productPrice.map((price) =>
+    const prodPrices = await this.productPrices.allTextContents();
+    const prices = prodPrices.map((price) =>
       parseFloat(price.replace("$", ""))
     );
     const sortedPrices = [...prices].sort((a, b) => b - a);
     expect(prices).toEqual(sortedPrices);
+  }
+
+  async addItemToCart() {
+    await this.addToCartButton.click();
+  }
+
+  async removeItemFromCart() {
+    await this.removeFromCartButton.click();
+  }
+
+  async getItemCount() {
+    const isVisible = await this.cartBadge.isVisible();
+    if (!isVisible) return 0;
+
+    const countText = await this.cartBadge.textContent();
+    return parseInt(countText);
+  }
+  async verifyCountOnItemAddition() {
+    const count = await this.getItemCount();
+    expect(count).toBe(1);
+  }
+
+  async verifyCountOnItemRemoval() {
+    const count = await this.getItemCount();
+    expect(count).toBe(0);
   }
 }
 
