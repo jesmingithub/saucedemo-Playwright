@@ -6,8 +6,11 @@ class Inventory {
     this.sortDropdown = page.getByText("Name (A to Z)Name (A to Z)");
     this.sortProducts = page.locator('[data-test="product-sort-container"]');
     this.productPrices = page.locator(".inventory_item_price");
-    this.addToCartButton = page.locator(
+    this.addToCartButtonforFirstItem = page.locator(
       '[data-test="add-to-cart-sauce-labs-backpack"]'
+    );
+    this.addToCartButtonforSecondItem = page.locator(
+      '[data-test="add-to-cart-sauce-labs-bike-light"]'
     );
     this.removeFromCartButton = page.locator(
       '[data-test="remove-sauce-labs-backpack"]'
@@ -56,11 +59,15 @@ class Inventory {
     expect(prices).toEqual(sortedPrices);
   }
 
-  async addItemToCart() {
-    await this.addToCartButton.click();
+  async addFirstItemToCart() {
+    await this.addToCartButtonforFirstItem.click();
   }
 
-  async removeItemFromCart() {
+  async addSecondItemToCart() {
+    await this.addToCartButtonforSecondItem.click();
+  }
+
+  async removeFirstItemFromCart() {
     await this.removeFromCartButton.click();
   }
 
@@ -71,12 +78,16 @@ class Inventory {
     const countText = await this.cartBadge.textContent();
     return parseInt(countText);
   }
-  async verifyCountOnItemAddition() {
+  async verifyCountWhenFirstItemAdded() {
     const count = await this.getItemCount();
     expect(count).toBe(1);
   }
+  async verifyCountWhenSecondItemAdded() {
+    const count = await this.getItemCount();
+    expect(count).toBe(2);
+  }
 
-  async verifyCountOnItemRemoval() {
+  async verifyCountWhenOnlyItemIsRemoved() {
     const count = await this.getItemCount();
     expect(count).toBe(0);
   }

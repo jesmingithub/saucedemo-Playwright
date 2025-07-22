@@ -1,21 +1,19 @@
-/*TC01: Successful login with standard user
-
-Steps:
-
-1.Navigate to login page
-2.Verify the Logo, Page Title, Url, UsernameField,PasswordField
-2.Enter username: standard_user
-3.Enter password: secret_sauce
-4.Click Login
-
-Expected Result: User lands on the inventory page 
-*/
 import test from "../../../fixtures/fixtures";
 const Inventory = require("../pages/inventoryPage");
 const testData = require("../../../data/testdata.json");
 const { validUser, lockedOutUser, invalidUser, emptyCredentials } = testData;
 
 test.describe("Positive Login Scenarios", () => {
+  /*TC01: Successful login with standard user
+      Steps:
+    1.Navigate to login page
+    2.Verify the Logo, Page Title, Url, UsernameField,PasswordField
+    2.Enter username: standard_user
+    3.Enter password: secret_sauce
+    4.Click Login
+
+Expected Result: User lands on the inventory page
+*/
   test("TC_01 : verify successful login to inventory page : @smoke", async ({
     page,
     loginPage,
